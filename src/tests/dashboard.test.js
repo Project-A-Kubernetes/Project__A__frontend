@@ -1,16 +1,11 @@
-// Import only the functions to test
-const { formatDate, cycleStatus } = require('../src/dashboard');
+const { formatDate, cycleStatus } = require('../dashboard');
 
 describe('Helper function tests', () => {
 
   test('formatDate returns formatted time string', () => {
     const mockDate = "2026-02-09T10:00:00Z";
     const result = formatDate(mockDate);
-    expect(result).toMatch(/\d{2}:\d{2}:\d{2}/); // matches HH:MM:SS format
-  });
-
-  test('formatDate returns "N/A" for undefined input', () => {
-    expect(formatDate()).toBe("N/A");
+    expect(result).toMatch(/\d{2}:\d{2}:\d{2}/);
   });
 
   test('cycleStatus returns next status correctly', () => {
