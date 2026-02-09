@@ -1,4 +1,4 @@
-name: test 
+name: test_build
 on: 
   push:
     branches:
@@ -19,7 +19,7 @@ jobs:
     #timeout-minutes: 2
     defaults:
       run:
-        working-directory: ./frontend 
+        working-directory: ./frontend #this runner runer run in the frontend path 
     steps:
       - name: checkout repo 
         uses:  actions/checkout@v4
@@ -48,3 +48,5 @@ jobs:
           exit-code: 1 #fail the pipeline if vulnerability are found in the file system
       - name: dependency audit 
         run: npm audit audit-level=high 
+      - name: ls file 
+        run: ls -la 
