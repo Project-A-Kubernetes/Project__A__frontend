@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Project-A-Kubernetes/Project__A__frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Project-A-Kubernetes/Project__A__frontend/issues"
+  },
+  "homepage": "https://github.com/Project-A-Kubernetes/Project__A__frontend#readme",
+  "devDependencies": {
+    "eslint": "^10.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0"
+  }
+}

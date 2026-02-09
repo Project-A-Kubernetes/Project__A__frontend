@@ -155,4 +155,28 @@ document.getElementById('close-modal-btn').onclick = () => toggleModal(false);
 document.getElementById('submit-job-btn').onclick = createJob;
 UI.deleteSelectedBtn.onclick = deleteSelectedJobs;
 
-window.addEventListener('DOMContentLoaded', fetchJobs);
+window.addEventListener('DOMContentLoaded', fetchJobs); 
+
+
+//unit testing 
+
+if (typeof module !== 'undefined') {
+    module.exports = {
+        // Helpers
+        formatDate,
+        escapeHtml,
+
+        // UI logic
+        renderJobs,
+        toggleDeleteButton,
+        selectAllJobs,
+        cycleStatus,
+
+        // API logic
+        fetchJobs,
+        createJob,
+        updateJobStatus,
+        deleteJob,
+        deleteSelectedJobs
+    };
+}

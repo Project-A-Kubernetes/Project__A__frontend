@@ -3,7 +3,7 @@ FROM nginx:alpine
 # Install envsubst (included in alpine nginx)
 # Copy source code to nginx html directory
 RUN rm -rf /usr/share/nginx/html/*
-COPY . /usr/share/nginx/html
+COPY src/ /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Create a shell script to inject env vars at runtime
