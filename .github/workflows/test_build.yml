@@ -35,7 +35,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - name: install dependency 
-        run: npm install
+        run: npm ci
       - name: run linting 
         run:  npx eslint .  #linting source code 
       - name: unit test 
