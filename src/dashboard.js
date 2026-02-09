@@ -85,7 +85,7 @@ async function fetchJobs() {
         renderJobs(data);
         UI.status.textContent = "Connected";
         UI.status.className = "status-indicator status-ok";
-    } catch (err) {
+    } catch (_err) {
         UI.status.textContent = "Disconnected";
         UI.status.className = "status-indicator status-error";
     }

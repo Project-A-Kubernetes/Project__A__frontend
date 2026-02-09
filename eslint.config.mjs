@@ -11,7 +11,8 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
-        fetch: "readonly"
+        fetch: "readonly",
+        module: "readonly",
       }
     },
     rules: {
