@@ -37,7 +37,7 @@ jobs:
       - name: install dependency 
         run: npm ci
       - name: run linting 
-        run:  npx eslint  #linting source code 
+        run:  npx eslint .  #linting source code 
       - name: unit test 
         run: npx jest 
       - name: security scan 
