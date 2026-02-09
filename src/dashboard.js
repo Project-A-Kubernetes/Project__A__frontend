@@ -160,23 +160,27 @@ window.addEventListener('DOMContentLoaded', fetchJobs);
 
 //unit testing 
 
-if (typeof module !== 'undefined') {
-    module.exports = {
-        // Helpers
-        formatDate,
-        escapeHtml,
-
-        // UI logic
-        renderJobs,
-        toggleDeleteButton,
-        selectAllJobs,
-        cycleStatus,
-
-        // API logic
-        fetchJobs,
-        createJob,
-        updateJobStatus,
-        deleteJob,
-        deleteSelectedJobs
+// Only run browser code if window exists
+if (typeof window !== "undefined") {
+    const UI = {
+        list: document.getElementById('job-list'),
+        table: document.getElementById('job-table'),
+        loading: document.getElementById('loading'),
+        status: document.getElementById('connection-status'),
+        modal: document.getElementById('job-modal'),
+        nameInput: document.getElementById('job-name-input'),
+        deleteSelectedBtn: document.getElementById('delete-selected-btn')
     };
+
+}
+
+// Pure helper functions
+function formatDate(isoStr) { /* ... */ }
+function cycleStatus(id, status) { /* ... */ }
+function toggleDeleteButton() { /* ... */ }
+function selectAllJobs(source) { /* ... */ }
+
+// CommonJS export (works in Jest / Node)
+if (typeof module !== 'undefined') {
+    module.exports = { formatDate, cycleStatus, toggleDeleteButton, selectAllJobs };
 }
