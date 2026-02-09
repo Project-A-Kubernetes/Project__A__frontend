@@ -159,19 +159,23 @@ window.addEventListener('DOMContentLoaded', fetchJobs);
 
 
 //unit testing 
-
-// ----------------- Helpers -----------------
+// ----------------- Helpers (declared once) -----------------
 function formatDate(isoStr) {
     if (!isoStr) return 'N/A';
     const date = new Date(isoStr);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
-function cycleStatus(id, currentStatus) { /* ... */ }
+function cycleStatus(id, currentStatus) { 
+    const statuses = ['pending', 'running', 'completed', 'failed'];
+    let nextIndex = (statuses.indexOf(currentStatus.toLowerCase()) + 1) % statuses.length;
+    return statuses[nextIndex];
+}
+
 function toggleDeleteButton() { /* ... */ }
 function selectAllJobs(source) { /* ... */ }
 
-// ----------------- Browser code -----------------
+// ----------------- Browser-only code -----------------
 if (typeof window !== "undefined") {
     const UI = {
         list: document.getElementById('job-list'),
@@ -183,12 +187,14 @@ if (typeof window !== "undefined") {
         deleteSelectedBtn: document.getElementById('delete-selected-btn')
     };
 
-    // All other browser-specific logic here
+    // all DOM manipulation, event listeners, fetch calls etc.
     document.getElementById('open-modal-btn').onclick = () => toggleModal(true);
-    // ...
+    document.getElementById('close-modal-btn').onclick = () => toggleModal(false);
+    // etc.
 }
 
-// ----------------- Export helpers for Jest/Node -----------------
+// ----------------- Export helpers for Node/Jest -----------------
 if (typeof module !== 'undefined') {
     module.exports = { formatDate, cycleStatus, toggleDeleteButton, selectAllJobs };
 }
+
