@@ -132,11 +132,15 @@ async function updateJobStatus(jobId, newStatus) {
     }
 }
 
-function cycleStatus(id, currentStatus) {
+function cycleStatus(_id, currentStatus) {
+    if (!currentStatus) return 'pending';
+
     const statuses = ['pending', 'running', 'completed', 'failed'];
-    let nextIndex = (statuses.indexOf(currentStatus.toLowerCase()) + 1) % statuses.length;
-    updateJobStatus(id, statuses[nextIndex]);
+    const index = statuses.indexOf(currentStatus.toLowerCase());
+
+    return statuses[(index + 1) % statuses.length];
 }
+
 
 async function deleteJob(id) {
     if (!confirm("Are you sure you want to delete this job?")) return;
