@@ -160,12 +160,15 @@ async function deleteSelectedJobs() {
 }
 
 // 5. Init
-document.getElementById('open-modal-btn').onclick = () => toggleModal(true);
-document.getElementById('close-modal-btn').onclick = () => toggleModal(false);
-document.getElementById('submit-job-btn').onclick = createJob;
-UI.deleteSelectedBtn.onclick = deleteSelectedJobs;
+if (typeof window !== 'undefined') {
+  // UI init
+  document.getElementById('open-modal-btn').onclick = () => toggleModal(true);
+  document.getElementById('close-modal-btn').onclick = () => toggleModal(false);
+  document.getElementById('submit-job-btn').onclick = createJob;
+  UI.deleteSelectedBtn.onclick = deleteSelectedJobs;
 
-window.addEventListener('DOMContentLoaded', fetchJobs); 
+  window.addEventListener('DOMContentLoaded', fetchJobs);
+} 
 
 //unit testing
 if (typeof module !== 'undefined') {
