@@ -91,4 +91,4 @@ jobs:
           rm -rf /tmp/cache 
           mv /tmp/cache-new /tmp/cache 
       - name: check built image 
-        run: docker image 
+        run: docker ps
