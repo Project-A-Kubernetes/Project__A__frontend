@@ -23,11 +23,6 @@ jobs:
         with: 
           fetch-depth: 1
           ref: main 
-      - name: Show working directory
-        run: pwd
-
-      - name: Show repo tree
-        run: ls -R
       - name: setup node 
         uses: actions/setup-node@v4
         with: 
@@ -38,7 +33,7 @@ jobs:
         run: npm ci
       - name: run linting 
         run:  npx eslint .  #linting source code 
-      - name: unit test 
+      - name: unit testing
         run: npx jest 
       - name: security scan 
         uses: aquasecurity/trivy-action@0.33.1
@@ -50,5 +45,4 @@ jobs:
           exit-code: 1 #fail the pipeline if vulnerability are found in the file system
       - name: dependency audit 
         run: npm audit audit-level=high 
-      - name: ls file 
-        run: ls -la 
+      
