@@ -4,7 +4,10 @@ const API_BASE_URL =
     ? window.APP_CONFIG.API_BASE_URL
     : 'http://127.0.0.1:8000';
 
-const UI = {
+let UI; // declare only
+
+if (typeof window !== 'undefined') {
+  UI = {
     list: document.getElementById('job-list'),
     table: document.getElementById('job-table'),
     loading: document.getElementById('loading'),
@@ -12,7 +15,11 @@ const UI = {
     modal: document.getElementById('job-modal'),
     nameInput: document.getElementById('job-name-input'),
     deleteSelectedBtn: document.getElementById('delete-selected-btn')
-};
+  };
+
+  // browser-only logic continues here
+}
+
 
 // 2. Helpers
 const formatDate = (isoStr) => {
@@ -159,3 +166,8 @@ document.getElementById('submit-job-btn').onclick = createJob;
 UI.deleteSelectedBtn.onclick = deleteSelectedJobs;
 
 window.addEventListener('DOMContentLoaded', fetchJobs); 
+
+//unit testing
+if (typeof module !== 'undefined') {
+  module.exports = { formatDate, cycleStatus };
+}
