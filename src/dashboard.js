@@ -132,7 +132,7 @@ async function updateJobStatus(jobId, newStatus) {
     }
 }
 
-function cycleStatus(_id, currentStatus) {
+function cycleStatus(currentStatus) {
     if (!currentStatus) return 'pending';
 
     const statuses = ['pending', 'running', 'completed', 'failed'];
@@ -140,6 +140,7 @@ function cycleStatus(_id, currentStatus) {
 
     return statuses[(index + 1) % statuses.length];
 }
+
 
 
 async function deleteJob(id) {
