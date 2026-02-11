@@ -51,6 +51,7 @@ jobs:
   build: 
     runs-on: ubuntu-latest 
     timeout-minutes: 5 
+    needs: test
     #outputs:
       #image: ${{steps.outputs.img_tag}}
     steps:
@@ -72,8 +73,8 @@ jobs:
         with: 
           images: ${{vars.ECR_REG}}/${{vars.ECR_REPO}} 
           tags: |
-            type=sha, prefix=sha 
-            type=raw, prefix=latest 
+            type=sha,prefix=sha-
+            type=raw,prefix=latest 
       - name: build time 
         uses: docker/build-push-action@v6 
         with: 
