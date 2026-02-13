@@ -82,7 +82,7 @@ jobs:
           docker load -i image.tar 
           docker images 
           docker ps 
-          ls 
+          echo "${{ needs.integration_test.outputs.image-tag }}"
 
       - name: run Trivy scan 
         id: trivy
