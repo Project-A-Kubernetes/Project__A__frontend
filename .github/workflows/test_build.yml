@@ -16,10 +16,10 @@ concurrency:
 jobs:
   test: 
     runs-on: ubuntu-latest
-    #timeout-minutes: 2 
+    timeout-minutes: 2 #tes time should not pass two minutes
     steps:
       - name: checkout repo 
-        uses:  actions/checkout@v4
+        uses:  actions/checkout@v4 #load repo to runner 
         with: 
           fetch-depth: 1
           ref: main 
@@ -33,9 +33,9 @@ jobs:
         run: npm ci
       - name: run linting 
         run:  npx eslint .  #linting source code 
-      - name: unit testing
+      - name: unit testing 
         run: npx jest 
-      - name: security scan 
+      - name: security scan # security scan that check my file system for vulberabilities
         uses: aquasecurity/trivy-action@0.33.1
         with: 
           scan-type: 'fs'
@@ -52,8 +52,8 @@ jobs:
     runs-on: ubuntu-latest 
     timeout-minutes: 5 
     needs: test
-    #outputs:
-      #image: ${{steps.outputs.img_tag}}
+    outputs:
+      image: ${{steps.img_tag.outputs}}
     steps:
       - name: checkout repo 
         uses: actions/checkout@v4 
@@ -91,4 +91,22 @@ jobs:
           rm -rf /tmp/cache 
           mv /tmp/cache-new /tmp/cache 
       - name: check built image 
-        run: docker images
+        run: docker images 
+      - name: save image  
+        run: | 
+          image= echo("${{steps.img_tag.outputs.tags}}" | grep " sha-" | head -n 1)
+          echo "saving now"
+          docker save $image -o  image.tar 
+          echo "image_tag=$image" >> GITHUB_OUTPUT 
+      - name: save image tag 
+        run: |
+          echo "${{steps.img_tag.outputs.tags}}" > image_tag.txt 
+      - name: login to aws 
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume:  ${{secrets.AWS_ROLE}}
+          aws-region: ${{secrets.AWS_REGION}} 
+      - name: export artifact to s3 
+        run: aws s3 cp image.tar s3://project-a-kubernetes-s3-bucket 
+      - name: export artifact metadata 
+        run: aws s3 cp image_tag.txt s3://project-a-kubernetes-s3-bucket 
