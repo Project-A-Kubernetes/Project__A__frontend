@@ -45,7 +45,7 @@ jobs:
           intervals=5
           health_url=http://localhost:8080/healthz
           count=0
-          until [$retries -gre $count]do;
+          until [$retries -gre $count]; do
             image_health=$(curl -s -o /null/dev -w "http_status" "$health_url" || true)
 
             if [$image_health == "200"]; then
