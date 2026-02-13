@@ -42,16 +42,14 @@ jobs:
         run: |
           docker run -d --name integration_check_app -p 80:80 ${{steps.image_tags.outputs.tag}}
           sleep 15
-      - name: run test
-        run: |
           retries=5 
           intervals=5
           health_url=http://localhost:80/healthz
           count=0
           until [ $count -ge $retries ]; do
-            image_health=$(curl -s -o /dev/null -w "%{http_code}" "$health_url")
+            image_health=$(curl --connect-timeout 2 --max-time 5 -s -o /dev/null -w "%{http_code}" "$health_url")
 
-            if [ "$image_health" -eq "200" ]; then
+            if [[ "$image_health" == "200" ]]; then
             echo "Integration Test Passed! at $count attempt" 
             docker logs integration_check_app
             docker ps 
@@ -63,7 +61,7 @@ jobs:
             echo "The number of attempt is $count/$retries with status code $image_health"
             sleep "$intervals"
           done 
-          echo "Integration tetst failed"
+          echo "Integration test failed"
           docker stop integration_check_app 
           docker rm -f integration_check_app 
           exit 1 
