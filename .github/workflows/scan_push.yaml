@@ -29,8 +29,8 @@ jobs:
         id: image_tags
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  .  
-          tags=$(cat image_tag.txt | grep "464356371111.dkr.ecr.us-east-1.amazonaws.com/project_a_kubernetes" )
-          echo "$tags" >> "$GITHUB_OUTPUT"
+          tags=$(cat "image_tag.txt" | grep "464356371111.dkr.ecr.us-east-1.amazonaws.com/project_a_kubernetes" )
+          echo "tag=$tags" >> "$GITHUB_OUTPUT"
 
       - name: load the image for docker 
         run: docker load -i image.tar 
@@ -40,5 +40,5 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2 
       - name: run integration test
         run: |
-          docker run -d --name integration_check_app --p 8080:80 ${{steps.image_tags.outputs.tags}}
+          docker run -d --name integration_check_app --p 8080:80 ${{steps.image_tags.outputs.tag}}
           docker ps 
