@@ -10,8 +10,8 @@ on:
 permissions: 
   contents: read
 concurrency:
-  cancel-in-progress: true 
-  group: ${{github.ref}} 
+  cancel-in-progress: false
+  group: sonar-cloud
 jobs:
   #sonar qube to scan source code 
   sonar_scan: 
