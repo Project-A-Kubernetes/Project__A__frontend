@@ -45,10 +45,10 @@ jobs:
           intervals=5
           health_url=http://localhost:8080/healthz
           count=0
-          until [$count -ge $retries]; do
+          until [ $count -ge $retries ]; do
             image_health=$(curl -s -o /dev/null -w "%{http_code}" "$health_url" || true)
 
-            if [ "$image_health" == "200" ]; then
+            if [ "$image_health" -eq 200 ]; then
             echo "Integration Test Passed! at $count attempt" 
             docker ps 
             docker stop integration_check_app
