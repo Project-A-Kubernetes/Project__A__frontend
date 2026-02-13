@@ -121,6 +121,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2 
       - name: push 
         run: | 
-          docker tag ${{needs.trivy_scan.outputs.image}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}: latest
+          docker tag ${{needs.trivy_scan.outputs.image}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
           docker push ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
           docker push  ${{needs.trivy_scan.outputs.image}}
