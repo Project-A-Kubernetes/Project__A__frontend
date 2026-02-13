@@ -40,9 +40,9 @@ jobs:
         run: docker images 
       - name: run integration test
         run: |
-          docker run -d --name integration_check_app -p 80:8000 ${{steps.image_tags.outputs.tag}}
+          docker run -d --name integration_check_app -p 80:80 ${{steps.image_tags.outputs.tag}}
           sleep 15
-          retries=3 
+          retries=5 
           intervals=5
           health_url=http://localhost:80/healthz
           count=0
