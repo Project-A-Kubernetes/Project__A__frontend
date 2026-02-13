@@ -102,7 +102,7 @@ jobs:
           image=$( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
           echo "saving now"
           #using .tar will compress the image for faster upload and download(artifact size minimized)
-          docker save $image -o  image.tar  
+          docker save "$image" -o  image.tar  
       - name: save image tag 
         run: |
           echo "${{steps.img_tag.outputs.tags}}" > image_tag.txt 
