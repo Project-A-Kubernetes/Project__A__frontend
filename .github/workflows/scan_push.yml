@@ -45,7 +45,7 @@ jobs:
           intervals=3
           health_url=http://localhost:80/healthz
           count=0
-          until [ $count -ge $retries ]; do
+          while [[ $count -le $retries ]]; do
             image_health=$(curl --connect-timeout 2 --max-time 5 -s -o /dev/null -w "%{http_code}" "$health_url" 2>/dev/null || echo "000")
             if [[ "$image_health" == "200" ]]; then
             echo "Integration Test Passed! at $count attempt" 
