@@ -94,10 +94,10 @@ jobs:
         run: docker images 
       - name: save image  
         run: | 
-          image= echo("${{steps.img_tag.outputs.tags}}" | grep " sha-" | head -n 1)
+          image=( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
           echo "saving now"
           docker save $image -o  image.tar 
-          echo "image_tag=$image" >> GITHUB_OUTPUT 
+          echo "image_tag=$image" >> "$GITHUB_OUTPUT" 
       - name: save image tag 
         run: |
           echo "${{steps.img_tag.outputs.tags}}" > image_tag.txt 
