@@ -10,6 +10,7 @@ on:
     
 permissions:
   contents: write 
+  id-token: write
 concurrency: 
   group: ${{github.ref}}
   cancel-in-progress: true 
@@ -52,8 +53,6 @@ jobs:
     runs-on: ubuntu-latest 
     timeout-minutes: 5 
     needs: test
-    outputs:
-      image: ${{steps.saved.outputs.image_tag}}
     steps:
       - name: checkout repo 
         uses: actions/checkout@v4 
@@ -97,16 +96,15 @@ jobs:
         run: | 
           image=$( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
           echo "saving now"
-          docker save $image -o  image.tar 
-          echo "image_tag=$image" >> "$GITHUB_OUTPUT" 
+          docker save $image -o  image.tar  
       - name: save image tag 
         run: |
           echo "${{steps.img_tag.outputs.tags}}" > image_tag.txt 
       - name: login to aws 
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume:  ${{secrets.AWS_ROLE}}
-          aws-region: ${{secrets.AWS_REGION}} 
+          role-to-assume:  ${{secrets.AWS_ROLE}} #use role oidc much more safer and configure role in organization secrets
+          aws-region: ${{secrets.AWS_REGION}} #save region in secret
       - name: export artifact to s3 
         run: aws s3 cp image.tar s3://project-a-kubernetes-s3-bucket 
       - name: export artifact metadata 
