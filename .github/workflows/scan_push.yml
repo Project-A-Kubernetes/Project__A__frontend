@@ -31,7 +31,7 @@ jobs:
         id: image_tags
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  .  
-          tags=$(cat "image_tag.txt" | grep "sha-" | grep "latest" )
+          tags=$(cat "image_tag.txt" | grep "sha-" )
           echo "tag=$tags" >> "$GITHUB_OUTPUT"
 
       - name: load the image for docker 
@@ -114,4 +114,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2 
       - name: push 
         run: | 
+          docker tag ${{vars.ECR_REG}}/${{vars.ECR_REPO}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}: latest
+          docker push ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
           docker push  ${{needs.integration_test.outputs.image-tag}}
