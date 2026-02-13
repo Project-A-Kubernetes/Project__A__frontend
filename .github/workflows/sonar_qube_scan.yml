@@ -4,6 +4,7 @@ on:
     branches: ["sonarscan"]
   pull_request: 
     branches: ["sonarscan"]
+    types: [opened, synchronize, reopened]    
   workflow_dispatch:
     
 permissions: 
@@ -21,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0 
       - name: scan 
-        uses: sonarS
-        with: 
-          SONAR_TOKEN: 
+        uses:  SonarSource/sonarqube-scan-action@v7.0.0 
+        env: 
+          SONAR_TOKEN: ${{secrets.SONAR_SCAN}}
           
