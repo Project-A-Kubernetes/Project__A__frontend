@@ -24,9 +24,13 @@ jobs:
           role-to-assume: ${{secrets.AWS_ROLE}}
           aws-region: ${{secrets.AWS_REGION}}
       - name: download the artifact 
-        run: aws cp s3://project-a-kubernetes-s3-bucket/image.tar .
+        run: aws s3 cp s3://project-a-kubernetes-s3-bucket/image.tar .
       - name: download image metadata 
-        run: aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  . 
+        id: image_tags
+        run: |
+          aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  .  
+          cat image_tag.txt | grep "464356371111.dkr.ecr.us-east-1.amazonaws.com/project_a_kubernetes:sha-6c87068" >> .
+
       - name: load the image for docker 
         run: docker load -i image.tar 
       - name: check image 
