@@ -1,4 +1,4 @@
-Project A - Kubernetes Frontend
+*Project A - Kubernetes Frontend*
 
 This repository contains the frontend application for Project A, with a production-ready CI/CD pipeline that includes integration testing, SonarCloud code analysis, security scanning with Trivy, and automated Docker image build/push to AWS ECR.
 
