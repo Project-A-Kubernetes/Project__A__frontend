@@ -17,8 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3 
     if: ${{github.event.workflow_run.conclusion == 'success'}}
-    outputs:
-      image-tag: ${{steps.image_tags.outputs.tag}}
     steps:
       - name: aws login 
         uses: aws-actions/configure-aws-credentials@v6
@@ -107,7 +105,7 @@ jobs:
     #=============
   push:
     runs-on: ubuntu-latest
-    needs: [integration_test, trivy_scan]
+    needs: trivy_scan
     timeout-minutes: 2 
     steps:
       - name: aws login 
@@ -123,6 +121,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2 
       - name: push 
         run: | 
-          docker tag ${{vars.ECR_REG}}/${{vars.ECR_REPO}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}: latest
+          docker tag ${{needs.trivy_scan.outputs.image}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}: latest
           docker push ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
-          docker push  ${{needs.integration_test.outputs.image-tag}}
+          docker push  ${{needs.trivy_scan.outputs.image}}
