@@ -29,7 +29,7 @@ jobs:
         id: image_tags
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  .  
-          tags=$(cat "image_tag.txt" | grep "464356371111.dkr.ecr.us-east-1.amazonaws.com/project_a_kubernetes" )
+          tags=$(cat "image_tag.txt" | grep "sha-" )
           echo "tag=$tags" >> "$GITHUB_OUTPUT"
 
       - name: load the image for docker 
