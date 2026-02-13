@@ -58,14 +58,17 @@ jobs:
         uses: actions/checkout@v4 
         with:
           fetch-depth: 0
+      #we will use docker buildx for faster build,more build features
       - name: docker build 
         uses: docker/setup-buildx-action@v3
+      #cached the recent built image for faster build of image...
       - name: cache docker build 
         uses: actions/cache@v5.0.3
         with:
           key: ${{runner.os}}-cache-path-${{github.sha}}
           path: /tmp/cache 
           restore-keys:  ${{runner.os}}-cache-path-
+        # we will use this to create a well defined image tag and labels ... good for dynamic tagging
       - name: generate image metadata  
         id: img_tag 
         uses: docker/metadata-action@v5
@@ -74,6 +77,7 @@ jobs:
           tags: |
             type=sha,prefix=sha-
             type=raw,value=latest 
+        # This build the image 
       - name: build time 
         uses: docker/build-push-action@v6 
         with: 
@@ -85,6 +89,7 @@ jobs:
           cache-from: type=local,src=/tmp/cache
           cache-to: type=local,dest=/tmp/cache-new 
           platforms: linux/amd64 
+        # cleaning up the old cache file and replace it with a new one.. this increase the build time and clean up the cache directory
       - name: cleaning up old cached file 
         run: | 
           rm -rf /tmp/cache 
@@ -96,6 +101,7 @@ jobs:
         run: | 
           image=$( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
           echo "saving now"
+          #using .tar will compress the image for faster upload and download(artifact size minimized)
           docker save $image -o  image.tar  
       - name: save image tag 
         run: |
