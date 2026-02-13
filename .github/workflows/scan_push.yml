@@ -41,7 +41,6 @@ jobs:
       - name: run integration test
         run: |
           docker run -d --name integration_check_app -p 80:80 ${{steps.image_tags.outputs.tag}}
-          docker logs integration_check_app
           retries=3 
           intervals=5
           health_url=http://localhost:80/healthz
