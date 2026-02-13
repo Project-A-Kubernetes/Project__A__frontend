@@ -46,7 +46,7 @@ jobs:
           health_url=http://localhost:8080/healthz
           count=0
           until [$retries -ge $count]; do
-            image_health=$(curl -s -o /null/dev -w "http_status" "$health_url" || true)
+            image_health=$(curl -s -o /null/dev -w "%{http_code}" "$health_url" || true)
 
             if [$image_health == "200"]; then
             echo "Integration Test Passed!" 
