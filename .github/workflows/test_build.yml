@@ -53,7 +53,7 @@ jobs:
     timeout-minutes: 5 
     needs: test
     outputs:
-      image: ${{steps.img_tag.outputs}}
+      image: ${{steps.saved.outputs.image_tag}}
     steps:
       - name: checkout repo 
         uses: actions/checkout@v4 
@@ -93,8 +93,9 @@ jobs:
       - name: check built image 
         run: docker images 
       - name: save image  
+        id: saved
         run: | 
-          image=( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
+          image=$( echo "${{steps.img_tag.outputs.tags}}" | grep "sha-" | head -n 1)
           echo "saving now"
           docker save $image -o  image.tar 
           echo "image_tag=$image" >> "$GITHUB_OUTPUT" 
