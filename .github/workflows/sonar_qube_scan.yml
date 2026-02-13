@@ -1,0 +1,27 @@
+name: sonar_qube_scan 
+on: 
+  push: 
+    branches: ["sonarscan"]
+  pull_request: 
+    branches: ["sonarscan"]
+  workflow_dispatch:
+    
+permissions: 
+  contents: read
+concurrency:
+  cancel-in-progress: true 
+  group: ${{github.ref}} 
+jobs:
+  sonar_scan: 
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: checkout repo 
+        uses: actions/checkout@v4 
+        with:
+          fetch-depth: 0 
+      - name: scan 
+        uses: sonarS
+        with: 
+          SONAR_TOKEN: 
+          
