@@ -17,7 +17,7 @@ concurrency:
 jobs:
   test: 
     runs-on: ubuntu-latest
-    timeout-minutes: 2 #tes time should not pass two minutes
+    timeout-minutes: 2 
     steps:
       - name: checkout repo 
         uses:  actions/checkout@v4 #load repo to runner 

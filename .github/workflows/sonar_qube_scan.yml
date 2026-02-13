@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: true 
   group: ${{github.ref}} 
 jobs:
+  #sonar qube to scan source code 
   sonar_scan: 
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -20,7 +21,7 @@ jobs:
       - name: checkout repo 
         uses: actions/checkout@v4 
         with:
-          fetch-depth: 0 
+          fetch-depth: 0  #a deep fetch for good scanning of source code
       - name: scan 
         uses:  SonarSource/sonarqube-scan-action@v7.0.0 
         env: 
