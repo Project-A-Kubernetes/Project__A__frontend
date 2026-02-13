@@ -31,7 +31,7 @@ jobs:
         id: image_tags
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket/image_tag.txt  .  
-          tags=$(cat "image_tag.txt" | grep "sha-" )
+          tags=$(cat "image_tag.txt" | grep "sha-" | head -n 1)
           echo "tag=$tags" >> "$GITHUB_OUTPUT"
 
       - name: load the image for docker 
@@ -55,7 +55,7 @@ jobs:
             exit 0
             fi 
             count=$((count +1 ))
-            echo "The number of attempt is $count/$retries with status code $image_health"
+            echo "The number of attempt is $count/$retries"
             sleep "$intervals"
           done 
           echo "Integration test failed"
@@ -88,7 +88,8 @@ jobs:
           exit-code: '0'
           ignore-unfixed: 'true'
           vuln-type: 'os,library'
-          image-ref: ${{needs.integration_test.outputs.image-tag}}
+          scan-type: image
+          scan-ref: ${{ needs.integration_test.outputs.image-tag }}
       - name: check
         if:  steps.trivy.outcome == 'success'
         run: echo "Passed Trivy security check!"
