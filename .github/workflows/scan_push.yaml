@@ -40,5 +40,5 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2 
       - name: run integration test
         run: |
-          docker run -d --name integration_check_app --p 8080:80 ${{steps.image_tags.outputs.tag}}
+          docker run -d --name integration_check_app -p 8080:80 ${{steps.image_tags.outputs.tag}}
           docker ps 
