@@ -5,7 +5,18 @@ global.fetch = jest.fn().mockResolvedValue({
     ok: true, // <--- Add this so your 'if (response.ok)' check passes
     json: () => Promise.resolve({ success: true }),
 });
+// Fake the UI object that your dashboard.js expects
+global.UI = {
+    status: { textContent: '' },
+    jobList: { innerHTML: '' },
+    // Add any other UI elements your code calls (e.g., table, form, etc.)
+};
 
+// Fake the document object if your code calls getElementById directly
+global.document = {
+    getElementById: jest.fn().mockReturnValue({ textContent: '', innerHTML: '' }),
+    querySelector: jest.fn().mockReturnValue({ textContent: '', innerHTML: '' }),
+};
 describe('Helper function tests', () => {
 
   test('formatDate returns formatted time string', () => {
