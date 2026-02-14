@@ -7,6 +7,9 @@ export default [
 
   // Frontend browser code
   {
+    ignores: ["src/dashboard.tests.js"]
+  },
+  {
     files: ["src/**/*.js"],
     languageOptions: {
       globals: {
