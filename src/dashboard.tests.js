@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 const assert = require('assert');
 
 // 1. MOCKING PHASE
