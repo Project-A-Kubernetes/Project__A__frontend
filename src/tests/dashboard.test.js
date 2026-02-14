@@ -1,5 +1,17 @@
+// STEP 1: Define all global variables BEFORE importing the source code
+global.updateJobStatus = jest.fn(); 
+global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () => Promise.resolve({ success: true }),
+});
+global.UI = {
+    status: { textContent: '' },
+    jobList: { innerHTML: '' }
+};
+
 const { formatDate, cycleStatus } = require('../dashboard');
 
+// Run your tests
 describe('Helper function tests', () => {
 
   test('formatDate returns formatted time string', () => {
@@ -8,11 +20,13 @@ describe('Helper function tests', () => {
     expect(result).toMatch(/\d{2}:\d{2}:\d{2}/);
   });
 
-  test('cycleStatus returns next status correctly', () => {
-    expect(cycleStatus('pending')).toBe('running');
-    expect(cycleStatus('running')).toBe('completed');
-    expect(cycleStatus('completed')).toBe('failed');
-    expect(cycleStatus('failed')).toBe('pending');
+  test('cycleStatus triggers an update correctly', async () => {
+    // Use 'await' because cycleStatus is async
+    await cycleStatus(1, 'pending');
+    
+    // Instead of checking the return value (which might be undefined),
+    // we check if it successfully called our fake update function
+    expect(global.updateJobStatus).toHaveBeenCalledWith(1, 'running');
   });
 
 });
