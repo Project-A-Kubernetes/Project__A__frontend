@@ -31,6 +31,10 @@ jobs:
         run: npm ci
       - name: run linting 
         run:  npx eslint .  #linting source code 
+      - name: Run Unit Tests
+        run: |
+          cd frontend/src
+          node dashboard.tests.js
       - name: system scan # security scan that check my file system for vulberabilities
         uses: aquasecurity/trivy-action@0.33.1
         with: 

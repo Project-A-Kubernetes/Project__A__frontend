@@ -151,7 +151,6 @@ function cycleStatus(jobId, currentStatus) {
     const statuses = ['pending', 'running', 'completed', 'failed'];
     const index = statuses.indexOf(currentStatus.toLowerCase());
     const nextStatus = statuses[(index + 1) % statuses.length];
-
     updateJobStatus(jobId, nextStatus);
 
 }
@@ -193,5 +192,5 @@ if (typeof window !== 'undefined') {
 
 //unit testing
 if (typeof module !== 'undefined') {
-  module.exports = { formatDate, cycleStatus };
+  module.exports = { formatDate, cycleStatus , escapeHtml};
 }
