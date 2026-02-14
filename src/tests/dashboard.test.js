@@ -1,5 +1,11 @@
 const { formatDate, cycleStatus } = require('../dashboard');
 
+// Mocking the global dependencies
+global.updateJobStatus = jest.fn().mockResolvedValue(true);
+global.fetch = jest.fn().mockResolvedValue({
+    json: () => Promise.resolve({ success: true }),
+});
+
 describe('Helper function tests', () => {
 
   test('formatDate returns formatted time string', () => {
@@ -8,11 +14,13 @@ describe('Helper function tests', () => {
     expect(result).toMatch(/\d{2}:\d{2}:\d{2}/);
   });
 
-  test('cycleStatus returns next status correctly', () => {
-    expect(cycleStatus('pending')).toBe('running');
-    expect(cycleStatus('running')).toBe('completed');
-    expect(cycleStatus('completed')).toBe('failed');
-    expect(cycleStatus('failed')).toBe('pending');
+  // Added 'async' here so we can use 'await'
+  test('cycleStatus returns next status correctly', async () => {
+    // We use await because cycleStatus returns a Promise
+    expect(await cycleStatus(1, 'pending')).toBe('running');
+    expect(await cycleStatus(1, 'running')).toBe('completed');
+    expect(await cycleStatus(1, 'completed')).toBe('failed');
+    expect(await cycleStatus(1, 'failed')).toBe('pending');
   });
 
 });
