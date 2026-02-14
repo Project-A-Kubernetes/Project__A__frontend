@@ -1,8 +1,8 @@
 const { formatDate, cycleStatus } = require('../dashboard');
 
 // Mocking the global dependencies
-global.updateJobStatus = jest.fn().mockResolvedValue(true);
 global.fetch = jest.fn().mockResolvedValue({
+    ok: true, // <--- Add this so your 'if (response.ok)' check passes
     json: () => Promise.resolve({ success: true }),
 });
 
