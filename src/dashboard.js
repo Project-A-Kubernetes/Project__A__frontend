@@ -189,10 +189,6 @@ if (typeof window !== 'undefined') {
 
   window.addEventListener('DOMContentLoaded', fetchJobs);
 } 
-window.cycleStatus = cycleStatus;
-window.deleteJob = deleteJob;
-window.selectAllJobs = selectAllJobs;
-window.toggleDeleteButton = toggleDeleteButton;
 
 //unit testing
 if (typeof module !== 'undefined') {
