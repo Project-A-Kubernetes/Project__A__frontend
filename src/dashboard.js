@@ -153,7 +153,7 @@ function cycleStatus(jobId, currentStatus) {
     const nextStatus = statuses[(index + 1) % statuses.length];
 
     updateJobStatus(jobId, nextStatus);
-    return nextStatus;
+
 }
 
 
