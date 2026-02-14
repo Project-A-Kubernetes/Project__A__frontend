@@ -55,10 +55,12 @@ function renderJobs(jobs) {
             
             <td>
                 <span class="badge ${job.status.toLowerCase()}" 
-                      style="cursor: pointer;" 
-                      onclick="cycleStatus('${job.id}', '${job.status}')">
+                    style="cursor: pointer;" 
+                    data-id="${job.id}"
+                    data-status="${job.status}">
                     ${job.status}
                 </span>
+
             </td>
             
             <td>${formatDate(job.created_at)}</td>
@@ -70,6 +72,14 @@ function renderJobs(jobs) {
             </td>
         </tr>
     `).join('');
+    document.querySelectorAll('.badge').forEach(badge => {
+    badge.addEventListener('click', () => {
+        const jobId = badge.dataset.id;
+        const currentStatus = badge.dataset.status;
+        cycleStatus(jobId, currentStatus);
+    });
+    });
+
     
     toggleDeleteButton(); 
 }
@@ -123,23 +133,28 @@ async function createJob() {
 
 async function updateJobStatus(jobId, newStatus) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/jobs/${jobId}?status=${newStatus}`, {
+        const response = await fetch(`${API_BASE_URL}/api/jobs/${jobId}`, {
             method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
         });
+
         if (response.ok) fetchJobs();
+        else console.error("Status update failed");
     } catch (err) {
         console.error("Update error:", err);
     }
 }
 
-function cycleStatus(currentStatus) {
-    if (!currentStatus) return 'pending';
 
+function cycleStatus(jobId, currentStatus) {
     const statuses = ['pending', 'running', 'completed', 'failed'];
     const index = statuses.indexOf(currentStatus.toLowerCase());
+    const nextStatus = statuses[(index + 1) % statuses.length];
 
-    return statuses[(index + 1) % statuses.length];
+    updateJobStatus(jobId, nextStatus);
 }
+
 
 
 
@@ -174,6 +189,10 @@ if (typeof window !== 'undefined') {
 
   window.addEventListener('DOMContentLoaded', fetchJobs);
 } 
+window.cycleStatus = cycleStatus;
+window.deleteJob = deleteJob;
+window.selectAllJobs = selectAllJobs;
+window.toggleDeleteButton = toggleDeleteButton;
 
 //unit testing
 if (typeof module !== 'undefined') {
