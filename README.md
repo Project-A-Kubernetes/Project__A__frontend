@@ -29,7 +29,7 @@ The service is fully containerized with Docker, automated through a CI/CD pipeli
 
 ## CI/CD Pipeline
 
-The CI/CD pipeline ensures automated testing, sonar-qube scaning,  container building, integration scan, push and deployment with gitops.
+The CI/CD pipeline ensures secure automated testing, sonar-qube scaning,  container building, integration scan, push and deployment with Gitops.
 
 Pipeline Steps:
 
