@@ -1,8 +1,8 @@
-*Project A - Kubernetes Frontend*
+# Project A -  Frontend
 
 ## Project Overview
 
-This project is a frontend service providing <brief purpose/functionality>.
+This project is a frontend service providing <brief purpose/functionality> This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
 The service is fully containerized with Docker, automated through a CI/CD pipeline, and is designed for deployment on Kubernetes, ensuring scalability, resilience, and maintainability.
 
 ## Architecture
@@ -30,6 +30,7 @@ The service is fully containerized with Docker, automated through a CI/CD pipeli
 ## CI/CD Pipeline
 
 The CI/CD pipeline ensures automated testing, sonar-qube scaning,  container building, integration scan, push and deployment with gitops.
+
 Pipeline Steps:
 
 - Checkout code from Git repository
