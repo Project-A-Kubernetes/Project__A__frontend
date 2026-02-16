@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a frontend service providing <brief purpose/functionality> This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
+This project is a frontend service providing <brief purpose/functionalities This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
 The service is fully containerized with Docker, automated through a CI/CD pipeline, and is designed for deployment on Kubernetes, ensuring scalability, resilience, and maintainability.
 
 ## Architecture
@@ -34,12 +34,16 @@ The CI/CD pipeline ensures secure automated testing, sonar-qube scaning,  contai
 Pipeline Steps:
 
 - Checkout code from Git repository
-- Run linting and unit tests
+- Run linting and unit tests 
+- trivy security FS scan
+- sonar-qube code quality scan
 - Build Docker image
-- scan 
-- Push Docker image to registry
-- Deploy to staging or prod environment
+- integration scan  
+- trivy image security scan
+- Push Docker image to registry (On approval, push to ECR)
 - On approval, deploy to environment
+- Deploy to staging or prod cluster using Gitop practice (argocd)
+
 
 ### Example GitHub Actions Workflow:
 ![Architecture Diagram](images/CICD.png)
