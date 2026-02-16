@@ -42,9 +42,9 @@ Pipeline Steps:
 - On approval, deploy to environment
 
 ### Example GitHub Actions Workflow:
-    ![Architecture Diagram](images/CICD.png)
+![Architecture Diagram](images/CICD.png)
 ### picture of a successful CICD 
-    ![Architecture Diagram](images/image.png)
+![Architecture Diagram](images/image.png)
 ## Containerization
 
 ### Dockerfile Highlights:
@@ -55,7 +55,7 @@ Pipeline Steps:
 -   Health checks for container readiness 
 
 ### Example Dockerfile snippet:
-    ![Architecture Diagram](images/Dockerfile.png)
+![Architecture Diagram](images/Dockerfile.png)
 
 
 ## Configuration & Secrets
