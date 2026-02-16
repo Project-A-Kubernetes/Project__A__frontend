@@ -62,18 +62,20 @@ Pipeline Steps:
     
 -   Environment variables used for database URL and service credentials
 -   Secrets stored securely in <AWS Secrets Manager / Kubernetes Secrets>
+-   configuration injected with kubernetes configmap 
 -   Configs differ per environment:
--       dev.env → local development
--       staging.env → staging cluster
--       prod.env → production cluster
+-       local development
+-       staging cluster
+-       production cluster
 
 ## Kubernetes Deployment
 
 #### Next steps for production deployment on Kubernetes:
 
--   Define deployment and service manifests (k8s/deployment.yaml, k8s/service.yaml)
+-   Define deployment, service and other resources manifests with Helm
 -   Use ConfigMaps and Secrets for environment-specific configurations
 -   Setup auto-scaling and rolling updates for zero downtime
+-   Setup canary release
 -   Monitoring with Prometheus/Grafana 
 
 
