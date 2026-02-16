@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a frontend service providing <brief purpose/functionality> This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
+This project is a frontend service providing <brief purpose/functionalities This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
 The service is fully containerized with Docker, automated through a CI/CD pipeline, and is designed for deployment on Kubernetes, ensuring scalability, resilience, and maintainability.
 
 ## Architecture
