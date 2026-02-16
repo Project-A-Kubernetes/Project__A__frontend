@@ -4,7 +4,8 @@ FROM nginx:alpine
 # Copy source code to nginx html directory
 RUN rm -rf /usr/share/nginx/html/*
 COPY src/ /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+#container configuration to check container health, readiness and metrics
+COPY nginx.conf /etc/nginx/conf.d/default.conf 
 
 # Create a shell script to inject env vars at runtime
 RUN echo '#!/bin/sh' > /docker-entrypoint.d/inject-config.sh && \

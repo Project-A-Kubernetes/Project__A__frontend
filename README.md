@@ -1,85 +1,99 @@
-*Project A - Kubernetes Frontend*
+# Project A -  Frontend
 
-This repository contains the frontend application for Project A, with a production-ready CI/CD pipeline that includes integration testing, SonarCloud code analysis, security scanning with Trivy, and automated Docker image build/push to AWS ECR.
+## Project Overview
 
-Table of Contents
+This project is a frontend service providing <brief purpose/functionality> This system tracks jobs, add jobs, delete jobs, change job status and display a user friendly dashboard.
+The service is fully containerized with Docker, automated through a CI/CD pipeline, and is designed for deployment on Kubernetes, ensuring scalability, resilience, and maintainability.
 
-Project Overview
+## Architecture
 
-Prerequisites
+    [Git Repository] 
+        |
+        v
+    [CI/CD Pipeline (GitHub Actions)]
+        |
+        v
+    [Docker Test, Build, Scan,  Push to Registry and deploy to cluster]
+        |
+        v
+    [Kubernetes Cluster Argocd(Staging or Production)]
+        |
+        v
+    [Monitoring & Logging (Prometheus / Grafana / ELK)]
+## Key Points:
 
-Local Setup
+    - Multi-environment deployment (dev, staging, prod)
+    - Automated build, test, scan, and deployment
+    - Container orchestration with Kubernetes
 
-CI/CD Workflow
 
-Docker & Integration Testing
+## CI/CD Pipeline
 
-SonarCloud Code Analysis
+The CI/CD pipeline ensures secure automated testing, sonar-qube scaning,  container building, integration scan, push and deployment with Gitops.
 
-Security Scanning with Trivy
+Pipeline Steps:
 
-Contributing
+- Checkout code from Git repository
+- Run linting and unit tests
+- Build Docker image
+- scan 
+- Push Docker image to registry
+- Deploy to staging or prod environment
+- On approval, deploy to environment
 
-License
+### Example GitHub Actions Workflow:
+![Architecture Diagram](images/CICD.png)
+### picture of a successful CICD 
+![Architecture Diagram](images/image.png)
+## Containerization
 
-Project Overview
+### Dockerfile Highlights:
 
-Project A is a frontend application built for Kubernetes deployment. The project is configured for robust CI/CD with GitHub Actions pipelines to ensure:
+-   Multi-stage build for small image size
+-   Exposes port 80
+-   Supports environment variables for configuration
+-   Health checks for container readiness 
 
-Code quality and maintainability (SonarCloud)
+### Example Dockerfile snippet:
+![Architecture Diagram](images/Dockerfile.png)
 
-Security scanning for Docker images (Trivy)
 
-Automated testing of Docker images (integration tests)
+## Configuration & Secrets
+    
+-   Environment variables used for database URL and service credentials
+-   Secrets stored securely in <AWS Secrets Manager / Kubernetes Secrets>
+-   configuration injected with kubernetes configmap 
+-   Configs differ per environment:
+-       local development
+-       staging cluster
+-       production cluster
 
-Automated production-ready Docker builds and pushes to AWS ECR
+## Kubernetes Deployment
 
-Prerequisites
+#### Next steps for production deployment on Kubernetes:
 
-Docker
- installed locally
+-   Define deployment, service and other resources manifests with Helm
+-   Use ConfigMaps and Secrets for environment-specific configurations
+-   Setup auto-scaling and rolling updates for zero downtime
+-   Setup canary release
+-   Monitoring with Prometheus/Grafana 
 
-AWS CLI
- configured
 
-GitHub Actions secrets configured for:
+## Monitoring & Logging
 
-AWS_REGION
+-   Monitoring: Prometheus metrics for container health, CPU, memory, and request  rates
+-   Alerts configured for errors rate, success rate, high latency, or failed deployments (SLI, SLO, Error Budget, Burn rate)
 
-AWS_ROLE
+##  Running Locally (DevOps Perspective)
+    # clone the repo to your local machine
+     git clone https://github.com/Project-A-Kubernetes/Project__A__frontend.git 
+    # change directory 
+    cd Project__A__frontend
+    # Build Docker image
+    docker build -t frontend:latest .
 
-ECR_REPO
+    # Run container locally
+    docker run -p 80:80 --name front frontend:latest
 
-SONAR_TOKEN
-Local Setup
-
-Clone the repository:
-
-git clone https://github.com/Project-A-Kubernetes/Project__A__frontend.git
-cd Project-A-Kubernetes/Project__A__frontend
-
-CI/CD Workflow
-
-The project uses GitHub Actions to orchestrate CI/CD:
-
-SonarCloud Scan
-
-Runs on PRs and push to main
-
-Checks code quality, test coverage, and potential bugs
-
-Docker Build & Integration Tests
-
-Runs on push to main
-
-Builds a Docker image
-
-Runs integration tests against the container
-
-If successful, pushes the image to AWS ECR
-
-Security Scan (Trivy)
-
-Runs after Docker image build
-
-Scans images for critical/high vulnerabilities
+    # Check logs
+    docker logs -f front
