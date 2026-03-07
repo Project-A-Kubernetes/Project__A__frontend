@@ -40,7 +40,7 @@ jobs:
           cd src
           node dashboard.tests.js
       - name: system scan # security scan that check my file system for vulberabilities
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with: 
           scan-type: 'fs'
           ignore-unfixed: true 
