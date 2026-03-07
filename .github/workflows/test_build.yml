@@ -112,7 +112,7 @@ jobs:
       - name: login to aws 
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume:  ${{secrets.AWS_ROLE}} #use role oidc much more safer and configure role in organization secrets
+          role-to-assume:  ${{secrets.AWS_ROLE}} #use role oidc much more safer and configured role in organization secrets
           aws-region: ${{secrets.AWS_REGION}} #save region in secret
       - name: export artifact to s3 
         run: aws s3 cp image.tar s3://project-a-kubernetes-s3-bucket 
