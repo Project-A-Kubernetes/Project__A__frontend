@@ -1,3 +1,3 @@
 window.APP_CONFIG = {
-    API_BASE_URL: "__API_BASE_URL__"
+  API_BASE_URL: "$API_BASE_URL"
 };
