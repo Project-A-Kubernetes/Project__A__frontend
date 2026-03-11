@@ -2,7 +2,7 @@
 const API_BASE_URL =
   typeof window !== 'undefined' && window.APP_CONFIG?.API_BASE_URL
     ? window.APP_CONFIG.API_BASE_URL
-    : 'http://127.0.0.1:8000';
+    : '/api'; 
 
 let UI; // declare only
 
