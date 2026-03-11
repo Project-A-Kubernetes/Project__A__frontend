@@ -2,7 +2,7 @@
 const API_BASE_URL =
   typeof window !== 'undefined' && window.APP_CONFIG?.API_BASE_URL
     ? window.APP_CONFIG.API_BASE_URL
-    : 'http://project-a-helm-backend:8000'; //we will use this here for example sake
+    : 'http://127.0.0.1:8000';
 
 let UI; // declare only
 
