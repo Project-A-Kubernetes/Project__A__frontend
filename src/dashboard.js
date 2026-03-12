@@ -2,7 +2,7 @@
 const API_BASE_URL =
   typeof window !== 'undefined' && window.APP_CONFIG?.API_BASE_URL
     ? window.APP_CONFIG.API_BASE_URL
-    : '/api'; 
+    : "/api"; 
 
 let UI; // declare only
 
@@ -99,7 +99,7 @@ function toggleDeleteButton() {
 // 4. API Calls
 async function fetchJobs() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/jobs`);
+        const response = await fetch(`${API_BASE_URL}/jobs`);
         if (!response.ok) throw new Error(`Server error`);
         const data = await response.json();
         renderJobs(data);
@@ -116,7 +116,7 @@ async function createJob() {
     if (!name) return alert("Name is required");
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/jobs`, {
+        const response = await fetch(`${API_BASE_URL}/jobs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name })
@@ -133,7 +133,7 @@ async function createJob() {
 
 async function updateJobStatus(jobId, newStatus) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/jobs/${jobId}`, {
+        const response = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })
@@ -161,7 +161,7 @@ function cycleStatus(jobId, currentStatus) {
 async function deleteJob(id) {
     if (!confirm("Are you sure you want to delete this job?")) return;
     try {
-        const response = await fetch(`${API_BASE_URL}/api/jobs/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${API_BASE_URL}/jobs/${id}`, { method: 'DELETE' });
         if (response.ok) fetchJobs();
     } catch (err) { console.error("Delete error:", err); }
 }
@@ -174,7 +174,7 @@ async function deleteSelectedJobs() {
     if (!confirm(`Delete ${selectedIds.length} selected jobs?`)) return;
 
     await Promise.all(selectedIds.map(id => 
-        fetch(`${API_BASE_URL}/api/jobs/${id}`, { method: 'DELETE' })
+        fetch(`${API_BASE_URL}/jobs/${id}`, { method: 'DELETE' })
     ));
     fetchJobs();
 }
