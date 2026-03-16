@@ -161,7 +161,7 @@ jobs:
       - name: Update image tag
         run: yq -i ".image.tag = \"${{ steps.tag.outputs.TAG }}\"" values.yaml
         working-directory: Project__A_Helm_Chart_Frontend-
-
+      #fixed
       - name: Commit & push
         run: |
           git config user.name "github-actions"
