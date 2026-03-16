@@ -137,6 +137,11 @@ jobs:
     environment:
       name: production
     steps:
+      - name: aws login 
+        uses: aws-actions/configure-aws-credentials@v6 
+        with: 
+          role-to-assume: ${{secrets.AWS_ROLE}}
+          aws-region: ${{secrets.AWS_REGION}}
       #we will authenticate using github app as its the best security practice with short live access
       - name: Authenticate GitHub App
         id: ghauth
@@ -146,16 +151,11 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: Project-A-Kubernetes
           repositories: Project__A_Helm_Chart_Frontend-
-      - name: aws login 
-        uses: aws-actions/configure-aws-credentials@v6 
-        with: 
-          role-to-assume: ${{secrets.AWS_ROLE}}
-          aws-region: ${{secrets.AWS_REGION}} 
       - name: download image metadata 
         id: the_tag
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket1/image_tag.txt  .  
-          tags=$(cut -d ':' -f2 image_tag.txt | tr -d '\n') 
+          tags=$(grep "sha-" image_tag.txt | tail -n1 | cut -d':' -f2)
           echo "my_tag=$tags" >> "$GITHUB_OUTPUT"
       - name: Clone Helm repo
         run: git clone https://x-access-token:${{ steps.ghauth.outputs.token }}@github.com/Project-A-Kubernetes/Project__A_Helm_Chart_Frontend-.git
@@ -168,7 +168,7 @@ jobs:
       - name: Update image tag
         run: yq -i ".image.tag = \"${{ steps.the_tag.outputs.my_tag }}\"" values.yaml
         working-directory: Project__A_Helm_Chart_Frontend-
-      #fixed
+      #commit and push the update value.yaml let argocd sync it
       - name: Commit & push
         run: |
           git config user.name "github-actions"
