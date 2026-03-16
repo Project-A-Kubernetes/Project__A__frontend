@@ -1,4 +1,4 @@
-name: scan_push 
+name: scan_push_update
 on: 
   workflow_run:
     workflows: ["test_build"]
@@ -127,3 +127,43 @@ jobs:
           docker tag ${{steps.the_tag.outputs.my_tag}} ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
           docker push ${{vars.ECR_REG}}/${{vars.ECR_REPO}}:latest
           docker push  ${{steps.the_tag.outputs.my_tag}}
+
+  #=====================
+  #update helm chart Repository 
+ #======================
+  update_helm:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - name: Set image tag
+        id: tag
+        run: echo "TAG=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+      #we will authenticate using github app as its the best security practice with short live access
+      - name: Authenticate GitHub App
+        id: ghauth
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Clone Helm repo
+        run: git clone https://x-access-token:${{ steps.ghauth.outputs.token }}@github.com/Project-A-Kubernetes/Project__A_Helm_Chart_Frontend-.git
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Update image tag
+        run: yq -i ".image.tag = \"${{ steps.tag.outputs.TAG }}\"" values.yaml
+        working-directory: Project__A_Helm_Chart_Frontend-
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add values.yaml
+          git commit -m "New release: update image tag to ${{ steps.tag.outputs.TAG }}" || echo "No changes"
+          git push origin main
+        working-directory: Project__A_Helm_Chart_Frontend-
