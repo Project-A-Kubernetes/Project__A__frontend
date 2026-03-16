@@ -133,6 +133,7 @@ jobs:
  #======================
   update_helm:
     runs-on: ubuntu-latest
+    needs: push
     environment:
       name: production
     steps:

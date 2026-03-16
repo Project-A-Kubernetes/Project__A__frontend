@@ -48,7 +48,9 @@ jobs:
           severity: 'CRITICAL,HIGH'
           exit-code: 1 #fail the pipeline if vulnerability are found in the file system
       - name: dependency audit 
-        run: npm audit audit-level=high 
+        run: |
+          npm audit fix
+          npm audit audit-level=high 
  #=============
   #build image 
  #=============     
