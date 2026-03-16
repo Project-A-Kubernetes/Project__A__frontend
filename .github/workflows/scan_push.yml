@@ -137,9 +137,6 @@ jobs:
     environment:
       name: production
     steps:
-      - name: Set image tag
-        id: tag
-        run: echo "TAG=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
       #we will authenticate using github app as its the best security practice with short live access
       - name: Authenticate GitHub App
         id: ghauth
@@ -149,7 +146,17 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: Project-A-Kubernetes
           repositories: Project__A_Helm_Chart_Frontend-
-
+      - name: aws login 
+        uses: aws-actions/configure-aws-credentials@v6 
+        with: 
+          role-to-assume: ${{secrets.AWS_ROLE}}
+          aws-region: ${{secrets.AWS_REGION}} 
+      - name: download image metadata 
+        id: the_tag
+        run: |
+          aws s3 cp s3://project-a-kubernetes-s3-bucket1/image_tag.txt  .  
+          tags=$(cat "image_tag.txt" | grep "sha-")
+          echo "my_tag=$tags" >> "$GITHUB_OUTPUT"
       - name: Clone Helm repo
         run: git clone https://x-access-token:${{ steps.ghauth.outputs.token }}@github.com/Project-A-Kubernetes/Project__A_Helm_Chart_Frontend-.git
 
@@ -159,7 +166,7 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
 
       - name: Update image tag
-        run: yq -i ".image.tag = \"${{ steps.tag.outputs.TAG }}\"" values.yaml
+        run: yq -i ".image.tag = \"${{ steps.the_tag.outputs.my_tag }}\"" values.yaml
         working-directory: Project__A_Helm_Chart_Frontend-
       #fixed
       - name: Commit & push
@@ -167,7 +174,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add values.yaml
-          git commit -m "New release: update image tag to ${{ steps.tag.outputs.TAG }}" || echo "No changes"
+          git commit -m "New release: update image tag to ${{ steps.the_tag.outputs.my_tag }}" || echo "No changes"
           git remote set-url origin https://x-access-token:${{ steps.ghauth.outputs.token }}@github.com/Project-A-Kubernetes/Project__A_Helm_Chart_Frontend-.git
           git push origin main
         working-directory: Project__A_Helm_Chart_Frontend-
