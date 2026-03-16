@@ -155,7 +155,7 @@ jobs:
         id: the_tag
         run: |
           aws s3 cp s3://project-a-kubernetes-s3-bucket1/image_tag.txt  .  
-          tags=$(cut -d ':' -f2 image_tag.txt)
+          tags=$(cut -d ':' -f2 image_tag.txt | tr -d '\n') 
           echo "my_tag=$tags" >> "$GITHUB_OUTPUT"
       - name: Clone Helm repo
         run: git clone https://x-access-token:${{ steps.ghauth.outputs.token }}@github.com/Project-A-Kubernetes/Project__A_Helm_Chart_Frontend-.git
